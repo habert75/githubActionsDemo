@@ -1,0 +1,21 @@
+replicaCount: 2
+name: optimisation-ui-staging
+fullnameOverride: optimisation-ui-staging
+
+autoscaling:
+  enabled: false
+
+image:
+  repository: rwest.jfrog.io/gpm-docker-release-local/optimisation-ui-staging
+
+ingress:
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: optimisation-ui.staging.gpm.aws-eu1.energy.local
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-central-1:450177620121:certificate/90b3151c-d237-4096-be81-4a50c1171219
+    alb.ingress.kubernetes.io/group.name: opti-staging
+  hosts:
+    - host: optimisation-ui.staging.gpm.aws-eu1.energy.local
+      path: /*
+      pathType: ImplementationSpecific
+      hostName: optimisation-ui-staging
+      port: 80

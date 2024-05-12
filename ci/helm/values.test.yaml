@@ -1,0 +1,21 @@
+replicaCount: 1
+name: qrcode-generator-test
+fullnameOverride: qrcode-generator-test
+
+autoscaling:
+  enabled: false
+
+image:
+  repository: rwest.jfrog.io/gpm-docker-release-local/qrcode-generator-test
+
+ingress:
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: qrcode-generator-test.gpm.aws-eu1.energy.local
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-central-1:304146072967:certificate/f007df79-137d-4267-aff4-8dd78fedff0f
+    alb.ingress.kubernetes.io/group.name: opti-test
+  hosts:
+    - host: qrcode-generator-test.gpm.aws-eu1.energy.local
+      path: /*
+      pathType: ImplementationSpecific
+      hostName: qrcode-generator-test
+      port: 80

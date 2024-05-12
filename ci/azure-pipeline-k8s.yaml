@@ -1,0 +1,53 @@
+trigger:
+  - master
+  - develop
+
+pr:
+  - master
+  - develop
+
+resources:
+  repositories:
+    - repository: pipeline-templates
+      ref: master
+      type: git
+      name: CAO-Gas-EmbddSrvcs/pipeline-templates
+
+extends:
+  template: docker/angular/cicd-pipeline-v2.yaml@pipeline-templates
+  parameters:
+    createArtifactorySecret: true
+    nodeVersion: '16.14.2'
+    environments:
+      - namespace: optimachine-test
+        environmentName: test
+        applicationName: qrcode-generator-test
+        repositoryName: qrcode-generator-test
+        credentials: gpm_test
+        replace: false
+        account: nprod
+        helmValuesFile: '$(Build.Repository.Name)/ci/helm/values.yaml'
+        helmValuesFileEnv: '$(Build.Repository.Name)/ci/helm/values.test.yaml'
+        buildConfig: test
+
+      # - namespace: optimachine-staging
+      #   environmentName: staging
+      #   applicationName: optimisation-ui-staging
+      #   repositoryName: optimisation-ui-staging
+      #   credentials: gpm_prod
+      #   replace: false
+      #   account: prod
+      #   helmValuesFile: '$(Build.Repository.Name)/ci/helm/values.yaml'
+      #   helmValuesFileEnv: '$(Build.Repository.Name)/ci/helm/values.staging.yaml'
+      #   buildConfig: staging
+
+      # - namespace: optimachine-prod
+      #   environmentName: prod
+      #   applicationName: optimisation-ui-prod
+      #   repositoryName: optimisation-ui-prod
+      #   credentials: gpm_prod
+      #   replace: false
+      #   account: prod
+      #   helmValuesFile: '$(Build.Repository.Name)/ci/helm/values.yaml'
+      #   helmValuesFileEnv: '$(Build.Repository.Name)/ci/helm/values.prod.yaml'
+      #   buildConfig: prod
